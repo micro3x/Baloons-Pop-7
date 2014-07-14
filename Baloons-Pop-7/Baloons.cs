@@ -15,239 +15,233 @@
         private static int counter = 0;
         private static int clearedCells = 0;
 
-        private static SortedDictionary<int, string> statistics = new SortedDictionary<int, string> ();
+        private static SortedDictionary<int, string> statistics = new SortedDictionary<int, string>();
 
         public static string[,] tableOfGame = new string[ROW, COLUMN];
 
-        public static StringBuilder inputCommand = new StringBuilder ();
+        public static StringBuilder inputCommand = new StringBuilder();
 
-        public static void Start ()
+        public static void Start()
         {
-            Console.WriteLine ("Welcome to “Balloons Pops” game. Please try to pop the balloons." +
+            Console.WriteLine("Welcome to “Balloons Pops” game. Please try to pop the balloons." +
                 " Use 'top' to view the top scoreboard, 'restart' to start a new game and 'exit' to quit the game.");
 
-            activeCells = ROW * COLUMN;            
+            activeCells = ROW * COLUMN;
 
-            for (int indexROW = 0; indexROW < ROW; indexROW++)
-            {
-                for (int indexCOLUMN = 0; indexCOLUMN < COLUMN; indexCOLUMN++)
-                {
-                    tableOfGame[indexROW, indexCOLUMN] = RND.GetRandomInt ();
-                }
-            }
-
-            Console.WriteLine ("    0 1 2 3 4 5 6 7 8 9");
-            Console.WriteLine ("   ---------------------");
-
-            for (int indexROW = 0; indexROW < ROW; indexROW++)
-            {
-                Console.Write (indexROW + " | ");
-
-                for (int indexCOLUMN = 0; indexCOLUMN < COLUMN; indexCOLUMN++)
-                {
-                    Console.Write (tableOfGame[indexROW, indexCOLUMN] + " ");
-                }
-
-                Console.Write ("| ");
-                Console.WriteLine ();
-            }
-
-            Console.WriteLine ("   ---------------------");
-            GameLogic (inputCommand);
+            InitialiseTableOfGame();
+            DrawTableOfGame();
+            GameLogic(inputCommand);
         }
 
-        public static void GameLogic (StringBuilder userInput)
+        private static void InitialiseTableOfGame()
         {
-            PlayGame ();
+            for(int indexRow = 0; indexRow < ROW; indexRow++)
+            {
+                for(int indexColumn = 0; indexColumn < COLUMN; indexColumn++)
+                {
+                    tableOfGame[indexRow, indexColumn] = RND.GetRandomInt();
+                }
+            }
+        }
+
+        private static void GameLogic(StringBuilder userInput)
+        {
+            PlayGame();
             counter++;
-            userInput.Clear ();
-            GameLogic (userInput);
+            userInput.Clear();
+            GameLogic(userInput);
         }
 
-        private static bool IsLegalMove (int indexROW, int indexCOLUMN)
+        private static bool IsLegalMove(int indexRow, int indexColumn)
         {
-            if ((indexROW < 0) || (indexCOLUMN < 0) || (indexCOLUMN > COLUMN - 1) || (indexROW > ROW - 1))
+            if((indexRow < 0) || (indexColumn < 0) || (indexColumn > COLUMN - 1) || (indexRow > ROW - 1))
             {
                 return false;
             }
             else
             {
-                return (tableOfGame[indexROW, indexCOLUMN] != ".");
+                return (tableOfGame[indexRow, indexColumn] != ".");
             }
         }
 
-        private static void InvalidCommand ()
+        private static void InvalidCommand()
         {
-            Console.WriteLine ("Invalid move or command");
-            inputCommand.Clear ();
-            GameLogic (inputCommand);
+            Console.WriteLine("Invalid move or command");
+            inputCommand.Clear();
+            GameLogic(inputCommand);
         }
 
-        private static void InvalidMove ()
+        private static void InvalidMove()
         {
-            Console.WriteLine ("Illegal move: cannot pop missing ballon!");
-            inputCommand.Clear ();
-            GameLogic (inputCommand);
+            Console.WriteLine("Illegal move: cannot pop missing ballon!");
+            inputCommand.Clear();
+            GameLogic(inputCommand);
         }
 
-        private static void ShowStatistics ()
+        private static void ShowStatistics()
         {
-            PrintAgain ();
+            PrintAgain();
         }
 
-        private static void Exit ()
+        private static void Exit()
         {
-            Console.WriteLine ("Good Bye");
-            Thread.Sleep (1000);
+            Console.WriteLine("Good Bye");
+            Thread.Sleep(1000);
 
-            Console.WriteLine (counter.ToString ());
-            Console.WriteLine (activeCells.ToString ());
-            Environment.Exit (0);
+            Console.WriteLine(counter.ToString());
+            Console.WriteLine(activeCells.ToString());
+            Environment.Exit(0);
         }
 
-        private static void Restart ()
+        private static void Restart()
         {
-            Start ();
+            Start();
         }
 
-        private static void ReadTheIput ()
+        private static void ReadTheInput()
         {
-            if (!IsFinished ())
+            if(!IsFinished())
             {
-                Console.Write ("Enter a row and column: ");
-                inputCommand.Append (Console.ReadLine ());
+                Console.Write("Enter a row and column: ");
+                inputCommand.Append(Console.ReadLine());
             }
             else
             {
-                Console.Write ("opal;aaaaaaaa! You popped all baloons in " + counter +
+                Console.Write("opal;aaaaaaaa! You popped all baloons in " + counter +
                     " moves. Please enter your name for the top scoreboard:");
 
-                inputCommand.Append (Console.ReadLine ());
-                statistics.Add (counter, inputCommand.ToString ());
-                PrintAgain ();
-                inputCommand.Clear ();
-                Start ();
+                inputCommand.Append(Console.ReadLine());
+                statistics.Add(counter, inputCommand.ToString());
+
+                PrintAgain();
+                inputCommand.Clear();
+                Start();
             }
         }
 
-        private static void PrintAgain ()
+        private static void PrintAgain()
         {
-            int p = 0;
+            int points = 0;
 
-            Console.WriteLine ("Scoreboard:");
+            Console.WriteLine("Scoreboard:");
 
-            foreach (KeyValuePair<int, string> s in statistics)
+            foreach(KeyValuePair<int, string> s in statistics)
             {
-                if (p == 4)
+                if(points == 4)
                 {
                     break;
                 }
                 else
                 {
-                    p++;
-                    Console.WriteLine ("{0}. {1} --> {2} moves", p, s.Value, s.Key);
+                    points++;
+                    Console.WriteLine("{0}. {1} --> {2} moves", points, s.Value, s.Key);
                 }
             }
         }
 
-        private static void PlayGame ()
+        private static void PlayGame()
         {
             int i = -1;
             int j = -1;
 
 
             // change GOTO
-            Play:
+        Play:
 
-            ReadTheIput ();
+            ReadTheInput();
 
-            string hop = inputCommand.ToString ();
+            string hop = inputCommand.ToString();
 
-            if (inputCommand.ToString () == "")
+            if(inputCommand.ToString() == "")
             {
-                InvalidCommand ();
+                InvalidCommand();
             }
 
-            if (inputCommand.ToString () == "top") 
-            { 
-                ShowStatistics (); 
-                inputCommand.Clear (); 
-                goto Play; 
+            if(inputCommand.ToString() == "top")
+            {
+                ShowStatistics();
+                inputCommand.Clear();
+                goto Play;
             }
             // change GOTO
 
 
 
-            if (inputCommand.ToString () == "restart") 
-            { 
-                inputCommand.Clear (); 
-                Restart (); 
+            if(inputCommand.ToString() == "restart")
+            {
+                inputCommand.Clear();
+                Restart();
             }
 
-            if (inputCommand.ToString () == "exit")
+            if(inputCommand.ToString() == "exit")
             {
-                Exit ();
+                Exit();
             }
 
             string activeCell;
-            inputCommand.Replace (" ", "");
+            inputCommand.Replace(" ", "");
 
             try
             {
-                i = Int32.Parse (inputCommand.ToString ()) / 10;
-                j = Int32.Parse (inputCommand.ToString ()) % 10;
+                i = Int32.Parse(inputCommand.ToString()) / 10;
+                j = Int32.Parse(inputCommand.ToString()) % 10;
             }
-            catch (Exception)
+            catch(Exception)
             {
-                InvalidCommand ();
+                InvalidCommand();
             }
 
-            if (IsLegalMove (i, j))
+            if(IsLegalMove(i, j))
             {
                 activeCell = tableOfGame[i, j];
-                ClearCells (i, j, activeCell);
+                ClearCells(i, j, activeCell);
             }
             else
             {
-                InvalidMove ();                
+                InvalidMove();
             }
 
-            RemoveBaloons ();
+            RemoveBaloons();
 
-            Console.WriteLine ("    0 1 2 3 4 5 6 7 8 9");
-            Console.WriteLine ("   ---------------------");
-
-            for (int indexROW = 0; indexROW < ROW; indexROW++)
-            {
-                Console.Write (indexROW + " | ");
-
-                for (int indexCOLUMN = 0; indexCOLUMN < COLUMN; indexCOLUMN++)
-                {
-                    Console.Write (tableOfGame[indexROW, indexCOLUMN] + " ");
-                }
-
-                Console.Write ("| ");
-                Console.WriteLine ();
-            }
-
-            Console.WriteLine ("   ---------------------");
+            DrawTableOfGame();
         }
 
-        private static void ClearCells (int indexROW, int indexCOLUMN, string activeCell)
+        private static void DrawTableOfGame()
         {
-            if ((indexROW >= 0) && (indexROW <= 4) && (indexCOLUMN <= 9) && (indexCOLUMN >= 0) && 
-                (tableOfGame[indexROW, indexCOLUMN] == activeCell))
+            Console.WriteLine("    0 1 2 3 4 5 6 7 8 9");
+            Console.WriteLine("   ---------------------");
+
+            for(int indexRow = 0; indexRow < ROW; indexRow++)
             {
-                tableOfGame[indexROW, indexCOLUMN] = ".";
+                Console.Write(indexRow + " | ");
+
+                for(int indexColumn = 0; indexColumn < COLUMN; indexColumn++)
+                {
+                    Console.Write(tableOfGame[indexRow, indexColumn] + " ");
+                }
+
+                Console.Write("| ");
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("   ---------------------");
+        }
+
+        private static void ClearCells(int indexRow, int indexColumn, string activeCell)
+        {
+            if((indexRow >= 0) && (indexRow <= 4) && (indexColumn <= 9) && (indexColumn >= 0) &&
+                (tableOfGame[indexRow, indexColumn] == activeCell))
+            {
+                tableOfGame[indexRow, indexColumn] = ".";
                 clearedCells++;
                 //Up
-                ClearCells (indexROW - 1, indexCOLUMN, activeCell);
+                ClearCells(indexRow - 1, indexColumn, activeCell);
                 //Down
-                ClearCells (indexROW + 1, indexCOLUMN, activeCell);
+                ClearCells(indexRow + 1, indexColumn, activeCell);
                 //Left
-                ClearCells (indexROW, indexCOLUMN + 1, activeCell);
+                ClearCells(indexRow, indexColumn + 1, activeCell);
                 //Right
-                ClearCells (indexROW, indexCOLUMN - 1, activeCell);
+                ClearCells(indexRow, indexColumn - 1, activeCell);
             }
             else
             {
@@ -257,37 +251,37 @@
             }
         }
 
-        private static void RemoveBaloons ()
+        private static void RemoveBaloons()
         {
-            int indexROW;
-            int indexCOLUMN;
+            int indexRow;
+            int indexColumn;
 
-            Queue<string> temp = new Queue<string> ();
+            Queue<string> temp = new Queue<string>();
 
-            for (indexCOLUMN = COLUMN - 1; indexCOLUMN >= 0; indexCOLUMN--)
+            for(indexColumn = COLUMN - 1; indexColumn >= 0; indexColumn--)
             {
-                for (indexROW = ROW - 1; indexROW >= 0; indexROW--)
+                for(indexRow = ROW - 1; indexRow >= 0; indexRow--)
                 {
-                    if (tableOfGame[indexROW, indexCOLUMN] != ".")
+                    if(tableOfGame[indexRow, indexColumn] != ".")
                     {
-                        temp.Enqueue (tableOfGame[indexROW, indexCOLUMN]);
-                        tableOfGame[indexROW, indexCOLUMN] = ".";
+                        temp.Enqueue(tableOfGame[indexRow, indexColumn]);
+                        tableOfGame[indexRow, indexColumn] = ".";
                     }
                 }
 
-                indexROW = 4;
+                indexRow = 4;
 
-                while (temp.Count > 0)
+                while(temp.Count > 0)
                 {
-                    tableOfGame[indexROW, indexCOLUMN] = temp.Dequeue ();
-                    indexROW--;
+                    tableOfGame[indexRow, indexColumn] = temp.Dequeue();                    
+                    indexRow--;
                 }
 
-                temp.Clear ();
+                temp.Clear();
             }
         }
 
-        private static bool IsFinished ()
+        private static bool IsFinished()
         {
             return (activeCells == 0);
         }

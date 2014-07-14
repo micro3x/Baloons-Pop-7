@@ -2,13 +2,13 @@
 {
     using System;
 
-    public static class RND
+    internal static class RND
     {
-        static Random randomGenerator = new Random();
+        private static Random randomGenerator = new Random();
 
         public static string GetRandomInt()
         {
-            string legalChars = "1234";
+            string legalChars = "@#$*";
             string builder = null;
 
             builder = legalChars[randomGenerator.Next(0, legalChars.Length)].ToString();

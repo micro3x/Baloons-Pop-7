@@ -1,9 +1,9 @@
 ﻿namespace BalloonsPops
 {
 
-    class StartBaloons
+    public class StartBaloons
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Baloons.Start();
         }
