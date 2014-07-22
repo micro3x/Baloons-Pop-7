@@ -8,8 +8,8 @@ namespace BalloonsPops
 
     public class Baloons
     {
-        const int ROW = 5;
-        const int COLUMN = 10;
+        const byte ROW = 5;
+        const byte COLUMN = 10;
         const string SYMBOLS = "1234";
 
         private static int activeCells = 0;
@@ -102,31 +102,31 @@ namespace BalloonsPops
                 inputCommand = Console.ReadLine();
                 statistics.Add(counter, inputCommand.ToString());
 
-                PrintAgain();
+                ScoreBoard.PrintAgain();
                 inputCommand = string.Empty;
                 Start();
             }
         }
 
-        private static void PrintAgain()
-        {
-            int points = 0;
+        //private static void PrintAgain()
+        //{
+        //    int points = 0;
 
-            Console.WriteLine("Scoreboard:");
+        //    Console.WriteLine("Scoreboard:");
 
-            foreach(KeyValuePair<int, string> s in statistics)
-            {
-                if (points == 4)
-                {
-                    break;
-                }
-                else
-                {
-                    points++;
-                    Console.WriteLine("{0}. {1} --> {2} moves", points, s.Value, s.Key);
-                }
-            }
-        }
+        //    foreach(KeyValuePair<int, string> s in statistics)
+        //    {
+        //        if (points == 4)
+        //        {
+        //            break;
+        //        }
+        //        else
+        //        {
+        //            points++;
+        //            Console.WriteLine("{0}. {1} --> {2} moves", points, s.Value, s.Key);
+        //        }
+        //    }
+        //}
 
         private static void PlayGame()
         {
@@ -145,7 +145,7 @@ namespace BalloonsPops
                     }
                 case "top":
                     {
-                        PrintAgain();
+                        ScoreBoard.PrintAgain();
                         inputCommand = string.Empty;
                         PlayGame();
                         break;
