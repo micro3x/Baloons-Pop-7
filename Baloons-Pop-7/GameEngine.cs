@@ -25,36 +25,36 @@ namespace BalloonsPops
 
         public void Start()
         {
-            counter = 0;
-            clearedCells = 0;
-            activeCells = ROW * COLUMN;
+           this.counter = 0;
+           this.clearedCells = 0;
+           this.activeCells = ROW * COLUMN;
 
             GameField gameField = new GameField(ROW, COLUMN);
             this.tableOfGame = gameField.TableOfGame;
 
-            drawer.DrawWelcomeMessage();
+            this.drawer.DrawWelcomeMessage();
 
-            GameCounter();
+            this.GameCounter();
         }
 
         private string ReadTheInput()
         {
             string input = string.Empty;
 
-            if (!IsFinished())
+            if (!this.IsFinished())
             {
                 Console.Write("Enter a row and column: ");
                 input = Console.ReadLine();
             }
             else
             {
-                Console.Write("You popped all baloons in " + counter + " moves.");
+                Console.Write("You popped all baloons in " + this.counter + " moves.");
                 Console.Write("Please enter your name for the top scoreboard: ");
 
                 input = Console.ReadLine();
-                ScoreBoard.AddPlayer(input.ToString(), counter);
+                ScoreBoard.AddPlayer(input.ToString(), this.counter);
                 ScoreBoard.Print();
-                Start();
+                this.Start();
             }
 
             return input;
@@ -62,34 +62,34 @@ namespace BalloonsPops
 
         private void PlayGame()
         {
-            drawer.DrawGameField(tableOfGame);
+            this.drawer.DrawGameField(this.tableOfGame);
 
             int row = -1;
             int col = -1;
-            string inputCommand = ReadTheInput();
+            string inputCommand = this.ReadTheInput();
             string command = inputCommand.Replace(" ", "");
 
             switch (command)
             {
                 case "":
                     {
-                        InvalidCommand();
+                        this.InvalidCommand();
                         break;
                     }
                 case "top":
                     {
                         ScoreBoard.Print();
-                        PlayGame();
+                        this.PlayGame();
                         break;
                     }
                 case "restart":
                     {
-                        Start();
+                        this.Start();
                         break;
                     }
                 case "exit":
                     {
-                        Exit();
+                        this.Exit();
                         break;
                     }
             }
@@ -103,43 +103,43 @@ namespace BalloonsPops
             }
             catch (Exception)
             {
-                InvalidCommand();
+                this.InvalidCommand();
             }
 
-            if (IsLegalMove(row, col))
+            if (this.IsLegalMove(row, col))
             {
-                char currentCell = tableOfGame[row, col];
-                ClearCells(row, col, currentCell);
+                char currentCell = this.tableOfGame[row, col];
+                this.ClearCells(row, col, currentCell);
             }
             else
             {
-                InvalidMove();
+                this.InvalidMove();
             }
 
-            DropDownBaloons();
+            this.DropDownBaloons();
         }
 
         private void ClearCells(int indexRow, int indexColumn, char currentCell)
         {
             if ((indexRow >= 0) && (indexRow <= 4) &&
                 (indexColumn >= 0) && (indexColumn <= 9) &&
-                (tableOfGame[indexRow, indexColumn] == currentCell))
+                (this.tableOfGame[indexRow, indexColumn] == currentCell))
             {
-                tableOfGame[indexRow, indexColumn] = '.';
-                clearedCells++;
+                this.tableOfGame[indexRow, indexColumn] = '.';
+                this.clearedCells++;
                 //Up
-                ClearCells(indexRow - 1, indexColumn, currentCell);
+                this.ClearCells(indexRow - 1, indexColumn, currentCell);
                 //Down
-                ClearCells(indexRow + 1, indexColumn, currentCell);
+                this.ClearCells(indexRow + 1, indexColumn, currentCell);
                 //Left
-                ClearCells(indexRow, indexColumn + 1, currentCell);
+                this.ClearCells(indexRow, indexColumn + 1, currentCell);
                 //Right
-                ClearCells(indexRow, indexColumn - 1, currentCell);
+                this.ClearCells(indexRow, indexColumn - 1, currentCell);
             }
             else
             {
-                activeCells -= clearedCells;
-                clearedCells = 0;
+                this.activeCells -= this.clearedCells;
+                this.clearedCells = 0;
                 return;
             }
         }
@@ -155,10 +155,10 @@ namespace BalloonsPops
             {
                 for (indexRow = ROW - 1; indexRow >= 0; indexRow--)
                 {
-                    if (tableOfGame[indexRow, indexColumn] != '.')
+                    if (this.tableOfGame[indexRow, indexColumn] != '.')
                     {
-                        queue.Enqueue(tableOfGame[indexRow, indexColumn]);
-                        tableOfGame[indexRow, indexColumn] = '.';
+                        queue.Enqueue(this.tableOfGame[indexRow, indexColumn]);
+                        this.tableOfGame[indexRow, indexColumn] = '.';
                     }
                 }
 
@@ -166,7 +166,7 @@ namespace BalloonsPops
 
                 while (queue.Count > 0)
                 {
-                    tableOfGame[indexRow, indexColumn] = queue.Dequeue();
+                    this.tableOfGame[indexRow, indexColumn] = queue.Dequeue();
                     indexRow--;
                 }
 
@@ -176,9 +176,9 @@ namespace BalloonsPops
 
         private void GameCounter()
         {
-            PlayGame();
-            counter++;
-            GameCounter();
+            this.PlayGame();
+            this.counter++;
+            this.GameCounter();
         }
 
         private bool IsLegalMove(int indexRow, int indexColumn)
@@ -196,26 +196,26 @@ namespace BalloonsPops
         private void InvalidCommand()
         {
             Console.WriteLine("Invalid move or command");
-            GameCounter();
+            this.GameCounter();
         }
 
         private void InvalidMove()
         {
             Console.WriteLine("Illegal move: cannot pop missing ballon!");
-            GameCounter();
+            this.GameCounter();
         }
 
         private bool IsFinished()
         {
-            return activeCells == 0;
+            return this.activeCells == 0;
         }
 
         private void Exit()
         {
             Console.WriteLine("Good Bye");
             Thread.Sleep(1000);
-            Console.WriteLine(counter.ToString());
-            Console.WriteLine(activeCells.ToString());
+            Console.WriteLine(this.counter.ToString());
+            Console.WriteLine(this.activeCells.ToString());
             Environment.Exit(0);
         }
     }
