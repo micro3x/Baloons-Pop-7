@@ -4,13 +4,13 @@
 
     public sealed class DrawFieldInformation
     {
-        private static readonly DrawFieldInformation drawer = new DrawFieldInformation();
+        private static readonly DrawFieldInformation Drawer = new DrawFieldInformation();
 
         public static DrawFieldInformation Instance
         {
             get
             {
-                return drawer;
+                return Drawer;
             }
         }
 
@@ -27,11 +27,15 @@
                 {
                     char symbol = tableOfGame[indexRow, indexColumn];
 
-                    if (symbol == '1') Console.BackgroundColor = ConsoleColor.Red;
-                    else if (symbol == '2') Console.BackgroundColor = ConsoleColor.Green;
-                    else if (symbol == '3') Console.BackgroundColor = ConsoleColor.Blue;
-                    else if (symbol == '4') Console.BackgroundColor = ConsoleColor.Yellow;
-                    else Console.ResetColor();
+                    switch (symbol)
+                    {
+                        case '1': Console.BackgroundColor = ConsoleColor.Red; break;
+                        case '2': Console.BackgroundColor = ConsoleColor.Green; break;
+                        case '3': Console.BackgroundColor = ConsoleColor.Blue; break;
+                        case '4': Console.BackgroundColor = ConsoleColor.Yellow; break;
+                        default: Console.ResetColor();
+                            break;
+                    }
 
                     Console.Write(symbol + " ");
                     Console.ResetColor();
