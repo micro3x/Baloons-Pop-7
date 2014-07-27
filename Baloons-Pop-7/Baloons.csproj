@@ -46,8 +46,8 @@
     <Compile Include="Baloons.cs" />
     <Compile Include="DrawFieldInformation.cs" />
     <Compile Include="GameField.cs" />
-    <Compile Include="GameInitialization.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="RandomGenerator.cs" />
     <Compile Include="ScoreBoard.cs" />
     <Compile Include="StartBaloons.cs" />
   </ItemGroup>
