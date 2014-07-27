@@ -6,7 +6,7 @@ namespace BalloonsPops
     using System.Text;
     using System.Threading;
 
-    public class Baloons
+    public class GameEngine
     {
         const byte ROW = 5;
         const byte COLUMN = 10;

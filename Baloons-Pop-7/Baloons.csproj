@@ -43,10 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Baloons.cs" />
+    <Compile Include="GameEngine.cs" />
     <Compile Include="DrawFieldInformation.cs" />
     <Compile Include="GameField.cs" />
-    <Compile Include="Player.cs" />
     <Compile Include="RandomGenerator.cs" />
     <Compile Include="ScoreBoard.cs" />
     <Compile Include="StartBaloons.cs" />
